@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+ 
+    --primary: 24 9.8% 10%;
+    --primary-foreground: 60 9.1% 97.8%;
+ 
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+ 
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+ 
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 20 14.3% 4.1%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+ 
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+ 
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+ 
+    --primary: 60 9.1% 97.8%;
+    --primary-foreground: 24 9.8% 10%;
+ 
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+ 
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+ 
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+ 
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 24 5.7% 82.9%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+
+/* ! ----------- NAVBAR ----------- */
+
+.navBar__item {
+  padding: 1rem 1.75rem;
+  width: 80%;
+  font-weight: bold;
+  border-radius: calc(var(--radius) - 4px);
+  transition: all .4s;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #A1A0BD;
+}
+
+.navBar__item-active{
+  padding: 1rem 1.75rem;
+  width: 80%;
+  font-weight: bold;
+  border-radius: calc(var(--radius) - 4px);
+  transition: all .4s;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #4F46E5;
+  background-color: #C7D2FE;
+}
+
+.navBar__item:hover {
+  background: #C7D2FE;
+  cursor: pointer;
+}
+.navBar__item:hover > .navBar__info{
+  color: #4F46E5;
+}
+
+.navBar__info {
+  display: flex;
+  align-items: center;
+}
+
+/*? ------ User button -----------*/
+
+
+/** User container*/
+.cl-internal-1cd5e4l {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+/** User name*/
+.cl-userButtonOuterIdentifier{
+  font-weight: bold;
+  color: #A1A0BD ;
+}
+
+/**User Button */
+
+.cl-avatarBox{
+  width: 50px;
+  height: 50px;
+  transition: all .1s;
+}
+
+.cl-avatarBox:hover{
+  border: 2px solid #C7D2FE;
+}
+
+/** Scroll bar*/
+.scrollbar::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+.scrollbar::-webkit-scrollbar:vertical {
+  width:12px;
+}
+
+.scrollbar::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.scrollbar::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #797979;
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
+/**MODAL*/
+
+.modalInside {
+  width: 600px;
+  background-color: #FFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  padding-bottom: 20px;
+}
