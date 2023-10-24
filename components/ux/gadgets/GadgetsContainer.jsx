@@ -26,7 +26,7 @@ const GadgetsContainer = ({ gadgets }) => {
                 modal={modal}
                 setModal={setModal}
             />
-            <div className=' h-1/2 overflow-y-scroll border-2 rounded-md border-gray-200 p-2 scrollbar min-w-max'>
+            <div className=' h-1/2 max-h-72 overflow-y-scroll border-2 rounded-md border-gray-200 p-2 scrollbar min-w-max'>
                 <Table>
                     <TableHeader>
                         <TableRow>

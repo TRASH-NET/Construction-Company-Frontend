@@ -56,9 +56,9 @@ export const deleteGadget = async (id) => {
 
     if (response.status === 200) {
 
-        const employeeDeleted = await response.json();
+        const gadgetDeleted = await response.json();
 
-        return employeeDeleted;
+        return gadgetDeleted;
     } else {
         throw new Error('No se pudo eliminar el gadget');
     }

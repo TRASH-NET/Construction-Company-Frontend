@@ -45,9 +45,9 @@ export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
         resolver: zodResolver(FormSchema),
     });
 
-    const onSubmit = async (gadget) => {
+    const onSubmit = async (gadgetEdited) => {
         try {
-            const edited = await editGadget(gadget.id, gadget);
+            const edited = await editGadget(gadget.id, gadgetEdited);
             location.reload();
         } catch (error) {
             console.error('Error al editar el gadget:', error);
@@ -109,7 +109,7 @@ export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
                                     <FormControl>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select" />
+                                                <SelectValue placeholder={field.value} />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="Hand Tool">Hand Tool</SelectItem>
@@ -128,13 +128,13 @@ export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
                                 <FormItem>
                                     <FormLabel>Gadget's State</FormLabel>
                                     <FormControl>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <Select onValueChange={field.onChange} defaultValue={''}>
                                             <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select" />
+                                                <SelectValue placeholder={field.value} />
                                             </SelectTrigger>
-                                            <SelectContent>
+                                            <SelectContent >
                                                 <SelectItem value="Avaible">Avaible</SelectItem>
-                                                <SelectItem value="Occuped">Occuped</SelectItem>
+                                                <SelectItem value="Occupied">Occupied</SelectItem>
                                                 <SelectItem value="In Maintenance">In Maintenance</SelectItem>
                                             </SelectContent>
                                         </Select>

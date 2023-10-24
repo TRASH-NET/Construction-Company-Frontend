@@ -52,7 +52,7 @@ export default function CreateEmployee({ setModal }) {
 		try {
 			const newEmployee = await postEmployee(employee);
 		} catch (error) {
-			console.error('Error al editar el empleado:', error);
+			console.error('Error al crear el empleado:', error);
 		}
 		location.reload();
 	};

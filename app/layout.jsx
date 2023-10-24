@@ -1,6 +1,7 @@
 import { Open_Sans } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider, SignedIn } from '@clerk/nextjs';
+import React from 'react';
 import Navbar from '@/components/ui/Navbar';
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
