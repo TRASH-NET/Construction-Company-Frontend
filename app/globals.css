@@ -75,6 +75,15 @@
   }
 }
 
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+
 .image-prueba {
   width: 759px;
   height: 414px;
@@ -185,4 +194,106 @@
   justify-content: center;
   border-radius: 12px;
   padding-bottom: 20px;
+}
+
+/** PROJECTS */
+
+.projects-container{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3,2rem) 1fr;
+  width: 100%;
+}
+
+.card-description {
+  --max-lines: 5;
+  --line-height: 1.4;
+
+  height: calc(var(--max-lines) * 1em * var(--line-height));
+  line-height: var(--line-height);
+
+  overflow: hidden;
+  position: relative;
+}
+
+.card-description::before{
+  content: "";
+  position: absolute;
+  height: calc(1em * var(--line-height));
+  width: 100%;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, white);
+}
+
+/** Scroll bar*/
+
+.scroll-projects::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+.scroll-projects::-webkit-scrollbar:vertical {
+  width:12px;
+}
+
+.scroll-projects::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+.scroll-projects::-webkit-scrollbar:horizontal {
+  height: 10px;
+}
+
+.scroll-projects::-webkit-scrollbar-thumb {
+  background-color: #797979;
+  border-radius: 20px;
+  border: 2px solid #f1f2f3;
+}
+
+.scroll-projects::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
+/**INDIVIDUAL PROJECT LAYOUT*/
+
+
+
+@media screen and (max-width: 1000px) {
+  .query {
+    
+    width: 100%;
+  }
+  .query-padre{
+    flex-direction: column;
+  }
+}
+
+/**PROJECT NAVBAR*/
+
+.link__project{
+  margin-right: 12px;
+  transition: all .3s;
+}
+
+.link__project:hover{
+  color: #4F46E5;
+  border-bottom: 1px solid #4F46E5;
+}
+
+.link__project-active {
+  margin-right: 12px;
+  transition: all .3s;
+  color: #4F46E5;
+  border-bottom: 1px solid #4F46E5;
+}
+
+/** PROJECT BOARD*/
+
+.grid-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: 40px repeat(4, 1fr);
+}
+
+.card-board{
+  border-left: 4px solid #701A75;
 }

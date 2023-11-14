@@ -89,7 +89,7 @@ export default function EditEmployee({ setModal2, employeeEdited, employee }) {
                             control={form.control}
                             name="id"
                             render={({ field }) => (
-                                <input type="hidden" {...field} />
+                                <input type="hidden" {...field} value={field.value ?? ''} />
                             )}
                         />
                         <FormField
@@ -100,7 +100,7 @@ export default function EditEmployee({ setModal2, employeeEdited, employee }) {
                                     <FormLabel>Employee's Name</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Name" {...field}
+                                            placeholder="Name" {...field} value={field.value ?? ''}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -114,7 +114,7 @@ export default function EditEmployee({ setModal2, employeeEdited, employee }) {
                                 <FormItem>
                                     <FormLabel>Employee's Last Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Last Name" {...field} />
+                                        <Input placeholder="Last Name" {...field} value={field.value ?? ''} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -127,7 +127,7 @@ export default function EditEmployee({ setModal2, employeeEdited, employee }) {
                                 <FormItem>
                                     <FormLabel>Employee's Phone</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Phone" {...field} />
+                                        <Input placeholder="Phone" {...field} value={field.value ?? ''} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -140,7 +140,7 @@ export default function EditEmployee({ setModal2, employeeEdited, employee }) {
                                 <FormItem>
                                     <FormLabel>Employee's Email</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Email" {...field} />
+                                        <Input placeholder="Email" {...field} value={field.value ?? ''} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -153,7 +153,7 @@ export default function EditEmployee({ setModal2, employeeEdited, employee }) {
                                 <FormItem>
                                     <FormLabel>Employee Type</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Type" {...field} />
+                                        <Input placeholder="Type" {...field} value={field.value ?? ''} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

@@ -21,9 +21,13 @@ import { postEmployee } from "@/models/employees";
 const FormSchema = z.object({
 	name: z.string().min(1, {
 		message: "Name's employee is required to be added on employees's list.",
+	}).max(30, {
+		message: "Name's employee must contain at most 30 character(s)"
 	}),
 	last_name: z.string().min(1, {
 		message: "Last Name's employee is required to be added on employees's list.",
+	}).max(30, {
+		message: "Last Name's employee must contain at most 30 character(s)"
 	}),
 	phone: z.string().refine(value => {
 		const phoneRegex = /^\+\d{1,4} \d{10}$/;
@@ -31,7 +35,9 @@ const FormSchema = z.object({
 	}, {
 		message: "Phone's employee must contain '+' symbol plus are code, then an space plus 10 digits of phone number like '+57 3013226756'",
 	}),
-	mail: z.string().refine(value => {
+	mail: z.string().max(40, {
+		message: "Mail's employee must contain at most 30 character(s)"
+	}).refine(value => {
 		const phoneRegex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
 		return phoneRegex.test(value);
 	}, {
@@ -39,6 +45,8 @@ const FormSchema = z.object({
 	}),
 	type: z.string().min(1, {
 		message: "Employee type is required to be added on employees's list.",
+	}).max(30, {
+		message: "Employee type must contain at most 30 character(s)"
 	}),
 });
 
@@ -50,11 +58,12 @@ export default function CreateEmployee({ setModal }) {
 
 	const onSubmit = async (employee) => {
 		try {
-			const newEmployee = await postEmployee(employee);
+			await postEmployee(employee);
+			location.reload();
 		} catch (error) {
 			console.error('Error al crear el empleado:', error);
 		}
-		location.reload();
+
 	};
 
 	const handleCloseModal = () => {
@@ -69,7 +78,7 @@ export default function CreateEmployee({ setModal }) {
 					<FontAwesomeIcon icon={faXmark} />
 				</div>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className=" w-4/5">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="w-4/5">
 						<FormField
 							control={form.control}
 							name="name"
@@ -78,7 +87,7 @@ export default function CreateEmployee({ setModal }) {
 									<FormLabel>Employee's Name</FormLabel>
 									<FormControl>
 										<Input
-											placeholder="Name" {...field}
+											placeholder="Name" {...field} value={field.value || ''}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -92,7 +101,7 @@ export default function CreateEmployee({ setModal }) {
 								<FormItem>
 									<FormLabel>Employee's Last Name</FormLabel>
 									<FormControl>
-										<Input placeholder="Last Name" {...field} />
+										<Input placeholder="Last Name" {...field} value={field.value || ''} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -105,7 +114,7 @@ export default function CreateEmployee({ setModal }) {
 								<FormItem>
 									<FormLabel>Employee's Phone</FormLabel>
 									<FormControl>
-										<Input placeholder="Phone" {...field} />
+										<Input placeholder="Phone" {...field} value={field.value || ''} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -118,7 +127,7 @@ export default function CreateEmployee({ setModal }) {
 								<FormItem>
 									<FormLabel>Employee's Email</FormLabel>
 									<FormControl>
-										<Input placeholder="Email" {...field} />
+										<Input placeholder="Email" {...field} value={field.value || ''} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -131,7 +140,7 @@ export default function CreateEmployee({ setModal }) {
 								<FormItem>
 									<FormLabel>Employee Type</FormLabel>
 									<FormControl>
-										<Input placeholder="Type" {...field} />
+										<Input placeholder="Type" {...field} value={field.value || ''} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>

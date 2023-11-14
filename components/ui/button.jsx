@@ -18,13 +18,18 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        modal: "w-full bg-indigo-600 my-4 uppercase font-bold hover:bg-indigo-700 text-white"
+        modal: "w-full bg-indigo-600 my-4 uppercase font-bold hover:bg-indigo-700 text-white",
+        modalDestructive: "w-full bg-red-500 uppercase font-bold hover:bg-red-600 text-white",
+        check: "text-sm bg-[white] border-2 border-[#4F46E5] p-3 hover:bg-[#4F46E5] hover:text-[white] font-bold",
+        newTask: "flex items-center gap-1 text-[12px] bg-[#E7E5E4] hover:bg-[#A8A29E] font-semibold"
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        check: "h-8 w-8 rounded-full",
+        newTask: "h-8 w-24 rounded-sm"
       },
     },
     defaultVariants: {

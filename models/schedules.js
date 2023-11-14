@@ -5,6 +5,13 @@ export const getSchedules = async () => {
     return resultado;
 }
 
+export const getSchedule = async (id) => {
+    const respuesta = await fetch(`${process.env.API_URL}/schedules/${id}`, { cache: 'no-store' });
+    const resultado = await respuesta.json();
+
+    return resultado;
+}
+
 export const postSchedule = async (schedule) => {
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/schedules/`, {

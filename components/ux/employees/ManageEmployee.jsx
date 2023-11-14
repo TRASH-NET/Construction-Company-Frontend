@@ -31,7 +31,7 @@ const ManageEmployee = ({ employee, employeeEdited, setEmployeeEdited }) => {
     const delete_employee = async () => {
 
         try {
-            const deleted = await deleteEmployee(employee.id);
+            await deleteEmployee(employee.id);
         } catch (error) {
             console.error('Error al editar el empleado:', error);
         }
@@ -50,6 +50,7 @@ const ManageEmployee = ({ employee, employeeEdited, setEmployeeEdited }) => {
                     <AlertDialogTrigger><FontAwesomeIcon
                         icon={faTrash}
                         className='cursor-pointer'
+                        style={{ color: '#DC2626' }}
                     /></AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>

@@ -5,7 +5,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import CreateGadget from './CreateGadget';
 
 
-const NewGadget = ({ modal, setModal }) => {
+const NewGadget = ({ modal, setModal, schedules }) => {
 
 
     const handleNewGadget = () => {
@@ -29,6 +29,7 @@ const NewGadget = ({ modal, setModal }) => {
             {modal && <CreateGadget
                 setModal={setModal}
                 modal={modal}
+                schedules={schedules}
             />
             }
 

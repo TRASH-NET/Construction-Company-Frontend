@@ -35,11 +35,19 @@ const FormSchema = z.object({
     }),
     state: z.string({
         required_error: "State's gadget is required to added on gadget's list.",
+    }),
+    schedule_id: z.string().nullable().transform(value => {
+        if (value === null) {
+            return null;
+        } else {
+            const parsedValue = parseInt(value);
+            return isNaN(parsedValue) ? null : parsedValue;
+        }
     })
 
 });
 
-export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
+export default function EditGadget({ setModal2, gadgetEdited, gadget, gadgets, schedules, projectInfo }) {
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -47,7 +55,7 @@ export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
 
     const onSubmit = async (gadgetEdited) => {
         try {
-            const edited = await editGadget(gadget.id, gadgetEdited);
+            await editGadget(gadget.id, gadgetEdited);
             location.reload();
         } catch (error) {
             console.error('Error al editar el gadget:', error);
@@ -65,6 +73,7 @@ export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
             form.setValue('name', gadgetEdited.name);
             form.setValue('type', gadgetEdited.type);
             form.setValue('state', gadgetEdited.state);
+            form.setValue('schedule_id', gadgetEdited.schedule_id)
         }
     }, []);
 
@@ -82,7 +91,7 @@ export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
                             control={form.control}
                             name="id"
                             render={({ field }) => (
-                                <input type="hidden" {...field} />
+                                <input type="hidden" {...field} value={field.value ?? ''} />
                             )}
                         />
                         <FormField
@@ -93,7 +102,7 @@ export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
                                     <FormLabel>Gadget's Name</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Name" {...field}
+                                            placeholder="Name" {...field} value={field.value ?? ''}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -112,8 +121,9 @@ export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
                                                 <SelectValue placeholder={field.value} />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="Hand Tool">Hand Tool</SelectItem>
-                                                <SelectItem value="Heavy Equipment">Heavy Equipment</SelectItem>
+                                                {gadgets.map(gadget => (
+                                                    <SelectItem key={gadget.id} value={gadget.type}>{gadget.type}</SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
@@ -128,14 +138,49 @@ export default function EditGadget({ setModal2, gadgetEdited, gadget }) {
                                 <FormItem>
                                     <FormLabel>Gadget's State</FormLabel>
                                     <FormControl>
-                                        <Select onValueChange={field.onChange} defaultValue={''}>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <SelectTrigger className="w-full">
                                                 <SelectValue placeholder={field.value} />
                                             </SelectTrigger>
                                             <SelectContent >
-                                                <SelectItem value="Avaible">Avaible</SelectItem>
-                                                <SelectItem value="Occupied">Occupied</SelectItem>
                                                 <SelectItem value="In Maintenance">In Maintenance</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="schedule_id"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Asigned to</FormLabel>
+                                    <FormControl>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder={field.value ? (
+                                                    projectInfo.reduce((placeholder, project) => {
+                                                        if (project.schedule_id) {
+                                                            project.schedule_id.forEach(task => {
+                                                                if (task.id === field.value) {
+                                                                    placeholder = `Project - ${project.name}`;
+                                                                }
+                                                            });
+                                                        }
+                                                        return placeholder;
+                                                    }, "Unassigned")
+                                                ) : "Select"} />
+                                            </SelectTrigger>
+                                            <SelectContent >
+                                                <SelectItem value={null}>N/A</SelectItem>
+                                                {schedules.map(schedule_ => (
+                                                    <SelectItem key={schedule_.id} value={schedule_.id.toString()} className="flex justify-between items-center gap-2">
+                                                        <p>Project {schedule_.project_id} -- <span className="font-bold capitalize">{schedule_.name}</span></p>
+                                                    </SelectItem>
+                                                ))}
+
                                             </SelectContent>
                                         </Select>
                                     </FormControl>

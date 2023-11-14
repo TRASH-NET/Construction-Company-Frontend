@@ -5,6 +5,13 @@ export const getProjects = async () => {
     return resultado;
 }
 
+export const getProject = async (id) => {
+    const respuesta = await fetch(`${process.env.API_URL}/projects/${id}`, { cache: 'no-store' });
+    const resultado = await respuesta.json();
+
+    return resultado;
+}
+
 export const postProject = async (project) => {
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/projects/`, {
@@ -16,7 +23,7 @@ export const postProject = async (project) => {
         body: JSON.stringify(project)
     });
 
-    if (response.status === 201) {
+    if (response.status === 200) {
 
         const newproject = await response.json();
 

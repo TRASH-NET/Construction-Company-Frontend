@@ -33,11 +33,18 @@ const FormSchema = z.object({
     }),
     state: z.string({
         required_error: "State's gadget is required to added on gadget's list.",
+    }),
+    schedule_id: z.string().nullable().transform(value => {
+        if (value === null) {
+            return null;
+        } else {
+            const parsedValue = parseInt(value);
+            return isNaN(parsedValue) ? null : parsedValue;
+        }
     })
-
 });
 
-export default function CreateGadget({ setModal }) {
+export default function CreateGadget({ setModal, schedules }) {
 
 
     const form = useForm({
@@ -46,8 +53,9 @@ export default function CreateGadget({ setModal }) {
 
     const onSubmit = async (gadget) => {
         try {
-            const gadgetPosted = await postGadget(gadget);
-            location.reload();
+            console.log(gadget);
+            await postGadget(gadget);
+            window.location.reload();
         } catch (error) {
             console.error('Error al crear el gadget:', error);
         }
@@ -75,7 +83,7 @@ export default function CreateGadget({ setModal }) {
                                     <FormLabel>Gadget's Name</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Name" {...field}
+                                            placeholder="Name" {...field} value={field.value || ''}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -89,15 +97,9 @@ export default function CreateGadget({ setModal }) {
                                 <FormItem>
                                     <FormLabel>Gadget's Type</FormLabel>
                                     <FormControl>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="Hand Tool">Hand Tool</SelectItem>
-                                                <SelectItem value="Heavy Equipment">Heavy Equipment</SelectItem>
-                                            </SelectContent>
-                                        </Select>
+                                        <Input
+                                            placeholder="Type" {...field} value={field.value || ''}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -105,19 +107,22 @@ export default function CreateGadget({ setModal }) {
                         />
                         <FormField
                             control={form.control}
-                            name="state"
+                            name="schedule_id"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Gadget's State</FormLabel>
+                                    <FormLabel>Assign to</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <SelectTrigger className="w-full">
                                                 <SelectValue placeholder="Select" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="Avaible">Avaible</SelectItem>
-                                                <SelectItem value="Occupied">Occupied</SelectItem>
-                                                <SelectItem value="In Maintenance">In Maintenance</SelectItem>
+                                                <SelectItem value={null}>N/A</SelectItem>
+                                                {schedules.map(schedule_ => (
+                                                    <SelectItem key={schedule_.id} value={schedule_.id.toString()} className="flex justify-between items-center gap-2">
+                                                        <p>{schedule_.name}<span className="font-bold"> ID: {schedule_.id}</span></p>
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                     </FormControl>

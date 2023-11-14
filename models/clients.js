@@ -16,14 +16,14 @@ export const postClient = async (client) => {
         body: JSON.stringify(client)
     });
 
-    if (response.status === 201) {
+    if (response.status === 200) {
 
         const newClient = await response.json();
 
         return newClient;
     } else {
 
-        throw new Error('No se pudo crear el client');
+        throw new Error('No se pudo crear el cliente');
     }
 };
 

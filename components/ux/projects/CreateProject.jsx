@@ -1,13 +1,9 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
-import { Input } from "@/components/ui/input";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@/components/ui/button";
-
 import {
     Form,
     FormControl,
@@ -16,44 +12,64 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { Input } from "@/components/ui/input";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { postProject } from "@/models/projects";
-
 
 const FormSchema = z.object({
     name: z.string().min(1, {
-        message: "Name's gadget is required to be added on gadget's list.",
+        message: "Name's project is required to be created.",
+    }).max(30, {
+        message: "Name's project must contain at most 30 character(s)"
     }),
-    type: z.string({
-        required_error: "Type's gadget is required to added on gadget's list.",
+    description: z.string().min(1, {
+        message: "Description's project is required to be created",
+    }).max(200, {
+        message: "Description's project must contain at most 200 character(s)"
     }),
-    state: z.string({
-        required_error: "State's gadget is required to added on gadget's list.",
-    })
+    budget: z.string().transform(value => {
+        const parsedValue = parseInt(value);
+        return parsedValue;
+    }),
+    finish_date: z.string().transform(value => {
 
+        return z.string().parse(value.toString());
+    }),
+    client_id: z.string().nullable().transform(value => {
+        if (value === null) {
+            return null;
+        } else {
+            const parsedValue = parseInt(value);
+            return parsedValue;
+        }
+    })
 });
 
-export default function CreateProject({ setModal, payrolls }) {
-
+export default function CreateProject({ setModal, clients }) {
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
     });
 
     const onSubmit = async (project) => {
+
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        project.start_date = formattedDate;
+
         try {
-            const projectPosted = await postProject(project);
+            await postProject(project);
             location.reload();
         } catch (error) {
-            console.error('Error al crear el proyecto:', error);
+            console.error('Error al crear el projecto:', error);
         }
-
 
     };
 
@@ -69,7 +85,7 @@ export default function CreateProject({ setModal, payrolls }) {
                     <FontAwesomeIcon icon={faXmark} />
                 </div>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className=" w-4/5">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="w-4/5">
                         <FormField
                             control={form.control}
                             name="name"
@@ -78,7 +94,7 @@ export default function CreateProject({ setModal, payrolls }) {
                                     <FormLabel>Project's Name</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Name" {...field}
+                                            placeholder="Name" {...field} value={field.value || ''}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -90,10 +106,12 @@ export default function CreateProject({ setModal, payrolls }) {
                             name="description"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Project's Description</FormLabel>
+                                    <FormLabel>Description</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="Description" {...field}
+                                        <Textarea
+                                            placeholder="Project Description"
+                                            className="resize-none"
+                                            {...field} value={field.value || ''}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -105,12 +123,9 @@ export default function CreateProject({ setModal, payrolls }) {
                             name="budget"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Project's budget</FormLabel>
+                                    <FormLabel>Budget</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            type="number"
-                                            placeholder="Budget" {...field}
-                                        />
+                                        <Input placeholder="Project Budget" type="number" {...field} value={field.value || 0} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -118,24 +133,12 @@ export default function CreateProject({ setModal, payrolls }) {
                         />
                         <FormField
                             control={form.control}
-                            name="type"
+                            name="finish_date"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Project's Payroll</FormLabel>
+                                    <FormLabel>Finish Date</FormLabel>
                                     <FormControl>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value={null}>No asignado</SelectItem>
-                                                {
-                                                    payrolls.map(payroll => (
-                                                        <SelectItem key={payroll.id} value={payroll.name}>{payroll.name}</SelectItem>
-                                                    ))
-                                                }
-                                            </SelectContent>
-                                        </Select>
+                                        <Input placeholder="Project Finish Date" type="date" {...field} value={field.value || new Date()} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -143,19 +146,22 @@ export default function CreateProject({ setModal, payrolls }) {
                         />
                         <FormField
                             control={form.control}
-                            name="state"
+                            name="client_id"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Gadget's State</FormLabel>
+                                    <FormLabel>Project Owner</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <SelectTrigger className="w-full">
                                                 <SelectValue placeholder="Select" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="Avaible">Avaible</SelectItem>
-                                                <SelectItem value="Occupied">Occupied</SelectItem>
-                                                <SelectItem value="In Maintenance">In Maintenance</SelectItem>
+                                                <SelectItem value={null}>N/A</SelectItem>
+                                                {clients.map(client => (
+                                                    <SelectItem key={client.id} value={client.id.toString()} className="flex justify-between items-center gap-2">
+                                                        <p>{client.name}</p>
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
@@ -163,6 +169,7 @@ export default function CreateProject({ setModal, payrolls }) {
                                 </FormItem>
                             )}
                         />
+
                         <Button type="submit" variant="modal">Create Project</Button>
                     </form>
                 </Form>

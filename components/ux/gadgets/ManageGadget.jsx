@@ -18,7 +18,7 @@ import { deleteGadget } from '@/models/gadgets';
 import EditGadget from './EditGadget';
 
 
-const ManageGadget = ({ gadget, gadgetEdited, setGadgetEdited }) => {
+const ManageGadget = ({ schedules, gadgets, gadget, gadgetEdited, setGadgetEdited, projectInfo }) => {
 
     const [modal2, setModal2] = useState(false);
 
@@ -31,7 +31,7 @@ const ManageGadget = ({ gadget, gadgetEdited, setGadgetEdited }) => {
     const delete_gadget = async () => {
 
         try {
-            const deleted = await deleteGadget(gadget.id);
+            await deleteGadget(gadget.id);
             window.location.reload();
         } catch (error) {
             console.error('Error al editar el empleado:', error);
@@ -50,6 +50,7 @@ const ManageGadget = ({ gadget, gadgetEdited, setGadgetEdited }) => {
                     <AlertDialogTrigger><FontAwesomeIcon
                         icon={faTrash}
                         className='cursor-pointer'
+                        style={{ color: '#DC2626' }}
                     /></AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
@@ -69,10 +70,11 @@ const ManageGadget = ({ gadget, gadgetEdited, setGadgetEdited }) => {
             </div>
             {modal2 && <EditGadget
                 setModal2={setModal2}
-                modal2={modal2}
                 gadgetEdited={gadgetEdited}
-                setGadgetEdited={setGadgetEdited}
                 gadget={gadget}
+                gadgets={gadgets}
+                schedules={schedules}
+                projectInfo={projectInfo}
             />
             }
 
